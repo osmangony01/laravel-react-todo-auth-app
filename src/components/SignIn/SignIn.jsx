@@ -3,7 +3,6 @@
 import { useContext, useState } from 'react';
 import { FaEye, FaEyeSlash, } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../provider/AuthProvider';
 import Swal from "sweetalert2";
 import axiosInstance from "../../routes/axiosInstance";
 
@@ -11,8 +10,6 @@ const SignIn = () => {
 
     const [passShow, setPassShow] = useState(true);
     const [error, setError] = useState("");
-
-    const { signIn } = useContext(AuthContext);
     const navigate = useNavigate();
 
 
@@ -54,17 +51,6 @@ const SignIn = () => {
         login(userData)
         form.reset();
 
-        // signIn(email, password)
-        //     .then(result => {
-        //         const loggedUser = result.user;
-        //         form.reset();
-        //         navigate("/profile", { replace: true });
-        //     })
-        //     .catch(error => {
-        //         //console.log(error.message);
-        //         setError("Incorrect Email or Password!");
-        //     })
-        // // console.log(email, password);
     }
 
 

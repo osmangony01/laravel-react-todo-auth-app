@@ -1,7 +1,6 @@
 
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import axiosInstance from "../../routes/axiosInstance";
 
@@ -11,33 +10,7 @@ import axiosInstance from "../../routes/axiosInstance";
 const SignUp = () => {
 
     const [passError, setPassError] = useState("");
-    const { createUser, setLoading, updateUserData } = useContext(AuthContext);
     const navigate = useNavigate();
-
-
-
-
-    // const register = async (userData) => {
-    //     const res = await axiosInstance.post('/register',{ ...userData });
-    //     console.log(res)
-
-        
-        
-    //     // const data = res.data;
-    //     // console.log(data);
-    //     // if (data.ok) {
-    //     //     // setReload(!reload);
-    //     //     Swal.fire({
-    //     //         position: 'center',
-    //     //         icon: 'success',
-    //     //         title: 'Task is created successfully',
-    //     //         showConfirmButton: false,
-    //     //         timer: 1500
-    //     //     })
-           
-    //     //     navigate("/login", { replace: true });
-    //     // }
-    // }
 
     const register = async (userData) => {
         try {
@@ -80,48 +53,6 @@ const SignUp = () => {
         //console.log(userData)
         register(userData);
         //form.reset();
-
-        // createUser(email, password)
-        //     .then(result => {
-        //         const CreateUser = result.user;
-        //         //console.log(CreateUser);
-
-        //         updateUserData(result.user, name, photo_url)
-        //             .then(() => {
-        //                 //console.log('user name updated ...');
-        //                 const savedUser = { name: name, email: email, role: 'user', photo: photo_url };
-        //                 fetch(`https://todo-server-blue.vercel.app/users`, {
-        //                     method: "POST",
-        //                     headers: {
-        //                         'content-type': 'application/json'
-        //                     },
-        //                     body: JSON.stringify(savedUser)
-        //                 })
-        //                     .then(res => res.json())
-        //                     .then(data => {
-        //                         if (data.insertedId) {
-        //                             Swal.fire({
-        //                                 position: 'center',
-        //                                 icon: 'success',
-        //                                 title: 'Registration is successful',
-        //                                 showConfirmButton: false,
-        //                                 timer: 1500
-        //                             })
-        //                             navigate("/profile", { replace: true });
-        //                         }
-        //                     })
-        //             })
-        //             .catch(error => {
-        //                 console.log(error.message);
-        //             })
-
-        //         setLoading(false);
-        //         form.reset();
-        //         navigate("/profile", { replace: true });
-        //     })
-        //     .catch(error => {
-        //         console.log(error.message);
-        //     })
     }
 
     //console.log(watch("example"));
