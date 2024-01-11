@@ -1,10 +1,14 @@
+import Navbar from "./Navbar";
 
 
 const Profile = () => {
-   
+
     return (
         <div>
-            profile
+            <Navbar></Navbar>
+            <div>
+                profile
+            </div>
         </div>
     );
 };
