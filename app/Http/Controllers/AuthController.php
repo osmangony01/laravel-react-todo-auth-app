@@ -59,9 +59,14 @@ class AuthController extends Controller
             ], 422);
         } 
 
-        if(! $token = auth()->attempt(["email"=> $req->email, "password"=> $req->password])){
-            return response()->json(['status'=> 401,'error' => 'Unauthorized'], 401);
+        // if(! $token = auth()->attempt(["email"=> $req->email, "password"=> $req->password])){
+        //     return response()->json(['status'=> 401,'error' => 'Unauthorized'], 401);
+        // }
+
+        if (! $token = auth()->attempt($req->only('email', 'password'))) {
+            return response()->json(['status' => 401, 'error' => 'Unauthorized'], 401);
         }
+
 
         return $this->createNewToken($token);
     }
@@ -88,11 +93,14 @@ class AuthController extends Controller
     
     protected function createNewToken($token)
     {
+        // Set the token as an HTTP-only cookie
+        $cookie = cookie('access_token', $token, auth()->factory()->getTTL() * 60, '/', null, false, true);
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
-        ]);
+        ])->withCookie($cookie);
     }
 }
