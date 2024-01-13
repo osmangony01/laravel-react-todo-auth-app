@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react';
 import axiosInstance from '../../../routes/axiosInstance';
 import { RxCross1 } from "react-icons/rx";
 import Swal from 'sweetalert2';
-import { TaskContextAPI } from '../../../provider/TaskProvider';
+import { TaskContextAPI } from '../Profile';
+
 
 
 const EditTask = ({ status, handleEditModal, item }) => {

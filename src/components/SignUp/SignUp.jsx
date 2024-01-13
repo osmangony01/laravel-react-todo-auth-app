@@ -1,44 +1,18 @@
 
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import axiosInstance from "../../routes/axiosInstance";
-
-
-
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
 
     const [passError, setPassError] = useState("");
+    const { register} = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const register = async (userData) => {
-        try {
-            const res = await axiosInstance.post('/register', { ...userData });
-            console.log(res);
-            if (res.status == 200) {
-                navigate("/", { replace: true });
-            }
-    
-        } catch (error) {
-            // Handle error response
-            if (error.response) {
-                console.log(error.response.data); // Validation errors or other error details
-                const errors = error.response.data.errors;
-                console.log(errors)
-                // You can update the state or display an error message to the user
-                // For example, setPassError(errors.password[0]);
-            } else {
-                console.error('Error with no response from server:', error.message);
-            }
-        }
-    }
-    
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.target;
-
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
@@ -48,14 +22,16 @@ const SignUp = () => {
             setPassError("At least 6 characters needed!!");
             return;
         }
-
-        const userData = { name, email, password };
-        //console.log(userData)
-        register(userData);
-        //form.reset();
+        const action = false;
+        action = await register(name, email, password);
+        if (action) {
+           console.log('success');
+            navigate("/", { replace: true }); 
+        }
+        else
+            console.log('Something wrong!');
+        form.reset();
     }
-
-    //console.log(watch("example"));
 
     return (
         <div className='pt-6'>

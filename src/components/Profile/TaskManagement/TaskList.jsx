@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import  { TaskContextAPI } from '../../../provider/TaskProvider';
 import AddTask from './AddTask';
 import Task from './Task';
+import { TaskContextAPI } from '../Profile';
 
 const TaskList = () => {
     const { tasks } = useContext(TaskContextAPI);

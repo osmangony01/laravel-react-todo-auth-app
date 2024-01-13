@@ -4,8 +4,8 @@ import { FaTrashAlt } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import axiosInstance from '../../../routes/axiosInstance';
 import Swal from 'sweetalert2';
-import { TaskContextAPI } from '../../../provider/TaskProvider';
 import EditTask from './EditTask';
+import { TaskContextAPI } from '../Profile';
 
 const Task = ({ item, index }) => {
 

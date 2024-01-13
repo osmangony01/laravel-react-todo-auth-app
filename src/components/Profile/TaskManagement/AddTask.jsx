@@ -2,7 +2,8 @@ import { RxCross1 } from "react-icons/rx";
 import axiosInstance from "../../../routes/axiosInstance.js";
 import { useContext } from "react";
 import Swal from "sweetalert2";
-import { TaskContextAPI } from "../../../provider/TaskProvider.jsx";
+import { TaskContextAPI } from "../Profile.jsx";
+
 
 
 const AddTask = ({ status, handleAddModal }) => {

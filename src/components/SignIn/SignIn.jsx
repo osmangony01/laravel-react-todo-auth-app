@@ -1,41 +1,18 @@
 
-
 import { useContext, useState } from 'react';
 import { FaEye, FaEyeSlash, } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
-import Swal from "sweetalert2";
-import axiosInstance from "../../routes/axiosInstance";
+import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../../provider/AuthProvider';
 
 const SignIn = () => {
 
     const [passShow, setPassShow] = useState(true);
     const [error, setError] = useState("");
+    const { login, user, token } = useContext(AuthContext);
     const navigate = useNavigate();
 
-
-    const login = async (userData) => {
-        try {
-            const res = await axiosInstance.post('/login', { ...userData });
-            console.log(res);
-            if (res.status == 200) {
-                navigate("/profile", { replace: true });
-            }
-    
-        } catch (error) {
-            // Handle error response
-            if (error.response) {
-                console.log(error.response.data); // Validation errors or other error details
-                const errors = error.response.data.errors;
-                console.log(errors)
-                // You can update the state or display an error message to the user
-                // For example, setPassError(errors.password[0]);
-            } else {
-                console.error('Error with no response from server:', error.message);
-            }
-        }
-    }
-
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
@@ -45,14 +22,19 @@ const SignIn = () => {
         if (email === "" || password === "") {
             return;
         }
-
-        const userData = { email, password };
-        //console.log(userData);
-        login(userData)
+        let action = false;
+        action = await login(email, password);
+        if (action) {
+            console.log('success');
+            navigate("/profile", { replace: true });
+        } else {
+            console.log('Something wrong!');
+        }
+            
         form.reset();
-
     }
-
+    console.log(user)
+    console.log(token)
 
     return (
         <div className='pt-8 pb-16'>

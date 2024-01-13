@@ -3,16 +3,22 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUserCircle } from "react-icons/fa";
 import axiosInstance from '../../routes/axiosInstance';
+import { AuthContext } from '../../provider/AuthProvider';
 
 const Navbar = () => {
-    const [user, setUser] = useState([]);
+
+    const { user, setUser, token, setToken } = useContext(AuthContext);
     const navigate = useNavigate();
+    // const tk = localStorage.getItem('access_token');
 
     const handleLogOut = async () => {
         try {
-            const res = await axiosInstance.post('/logout');
+            const res = await axiosInstance.post(`logout?token=${token}`);
             console.log(res);
-            if (res.message ) {
+            if (res?.status==200) {
+                localStorage.removeItem('access_token');
+                setUser(null);
+                setToken(null);
                 navigate("/", { replace: true });
             }
     

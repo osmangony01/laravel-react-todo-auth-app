@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import './index.css'
 import router from './routes/Route.jsx'
-import TaskProvider from './provider/TaskProvider.jsx'
-
+import AuthProvider from './provider/AuthProvider.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <div className='max-w-[1400px] mx-auto'>
-      <TaskProvider>
-        <RouterProvider router={router}></RouterProvider>
-      </TaskProvider>
+      <AuthProvider>
+          <RouterProvider router={router}></RouterProvider>
+      </AuthProvider>
     </div>
   </React.StrictMode>,
 )
