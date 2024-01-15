@@ -30,7 +30,7 @@ Route::put('update-task/{id}', [TaskController::class, 'updateTask']);
 Route::delete("delete-task/{id}",[TaskController::class, 'deleteTask']);
 
 Route::get('task/search', [TaskController::class, 'searchByTitle']);
-
+Route::get('getFilteredTaskData', [TaskController::class, 'filteredTaskData']);
 
 
 // practice route

@@ -208,4 +208,35 @@ class TaskController extends Controller
             ], 404);
         }
     }
+
+    public function filteredTaskData(Request $req)
+    {
+        $req->validate([
+            'task_due_date' => 'date',
+            'task_priority' => 'string',
+        ]);
+
+        // Retrieve tasks based on user_id and title
+        $user_id = $req->input('user_id');
+        $task_due_date = $req->input('task_due_date');
+        $task_priority = $req->input('task_priority');
+
+        $filteredData = Task::where('user_id', $user_id)
+                    ->where('task_due_date', 'like', '%' . $task_due_date . '%')
+                    ->where('task_priority', 'like', '%' . $task_priority . '%')
+                    ->get();
+      
+        if($filteredData->count()>0){
+            return response()->json([
+                'status'=> 200,
+                'tasks'=> $filteredData
+            ], 200);
+        }
+        else{
+            return response()->json([
+                'status'=> 404,
+                'errors'=> 'No Records Found!!'
+            ], 404);
+        }
+    }
 }
