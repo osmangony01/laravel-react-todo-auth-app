@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
             }
             else {
                 return false;
-            }    
+            }
         }
         catch (error) {
             if (error.response)
@@ -83,54 +83,92 @@ const AuthProvider = ({ children }) => {
         }
     }
 
+
     const saveToken = (token) => {
-        setToken(token);
-        localStorage.setItem("access_token", token)
+        try {
+            localStorage.setItem("access_token", token);
+            setToken(token);
+        } catch (error) {
+            console.error('Error saving token to localStorage:', error.message);
+        }
     }
 
     const getToken = () => {
-        const tk = localStorage.getItem("access_token")
-        if (tk) {
-            if (!token) {
-                setToken(tk);
+        try {
+            const tk = localStorage.getItem("access_token");
+            if (tk) {
+                if (!token) {
+                    setToken(tk);
+                }
+                return tk;
+            } else {
+                return "";
             }
-           
-            return tk;
-        } else {
+        } catch (error) {
+            console.error('Error getting token from localStorage:', error.message);
             return "";
         }
     }
 
+    // const authStateChange = async () => {
+    //     const tk = getToken();
+    //     if (!user) {
+    //         if (tk) {
+    //             try {
+    //                 const res = await axiosInstance.get(`profile?token=${tk}`);
+    //                 console.log(res);
+    //                 console.log(res.status)
+    //                 if (res?.data) {
+    //                     setUser(res.data);
+    //                     return true;
+    //                 }
+    //                 else {
+    //                     return false;
+    //                 }    
+    //             }
+    //             catch (error) {
+    //                 if (error.response)
+    //                     console.log(error.response.data);
+    //                 else
+    //                     console.error('Error with no response from server:', error.message);
+    //                 return false;
+    //             }
+    //         }
+    //     }
+    // }
     const authStateChange = async () => {
         const tk = getToken();
         if (!user) {
             if (tk) {
                 try {
-                    const res = await axiosInstance.get(`profile?token=${tk}`);
+                    const res = await axiosInstance.get(`/profile?token=${tk}`);
                     console.log(res);
-                    console.log(res.status)
-                    if (res.data?.user) {
-                        setUser(res.data.user);
-                        return true;
+                    console.log(res.status);
+                    if (res?.data) {
+                        setUser(res.data);
+                        return res.data; // Resolve the promise with user data
+                    } else {
+                        return null;
                     }
-                    else {
-                        return false;
-                    }    
-                }
-                catch (error) {
-                    if (error.response)
-                        console.log(error.response.data);
-                    else
-                        console.error('Error with no response from server:', error.message);
-                    return false;
+                } catch (error) {
+                    console.error('Error with no response from server:', error.message);
+                    return null;
                 }
             }
         }
-    }
+        return null;
+    };
+
 
     useEffect(() => {
-        authStateChange();
-    },[])
+        const fetchData = async () => {
+            const userData = await authStateChange();
+            setUser(userData);
+            setLoading(false); // Set loading to false once the authentication state is determined
+        };
+    
+        fetchData();
+    }, [])
 
     const authInfo = {
         user,

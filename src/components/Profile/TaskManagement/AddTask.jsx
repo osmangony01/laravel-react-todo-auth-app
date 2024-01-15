@@ -3,12 +3,13 @@ import axiosInstance from "../../../routes/axiosInstance.js";
 import { useContext } from "react";
 import Swal from "sweetalert2";
 import { TaskContextAPI } from "../Profile.jsx";
+import { AuthContext } from "../../../provider/AuthProvider.jsx";
 
 
 
 const AddTask = ({ status, handleAddModal }) => {
 
-
+    const { user, token } = useContext(AuthContext);
     const { reload, setReload } = useContext(TaskContextAPI);
     const modal = status;
 
@@ -58,13 +59,14 @@ const AddTask = ({ status, handleAddModal }) => {
         const task_description = form.task_description.value;
 
 
-        const taskData = { task_title, task_due_date, task_priority, task_description };
+        const id = user?.id;
+        const taskData = { task_title, task_due_date, task_priority, task_description, id };
         //console.log(taskData)
         createTask(taskData)
         form.reset();
         handleAddModal(false);
     }
-
+    
     return (
         <div>
             {

@@ -22,7 +22,7 @@ const SignUp = () => {
             setPassError("At least 6 characters needed!!");
             return;
         }
-        const action = false;
+        let action = false;
         action = await register(name, email, password);
         if (action) {
            console.log('success');

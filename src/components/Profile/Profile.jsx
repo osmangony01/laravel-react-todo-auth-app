@@ -1,13 +1,15 @@
 
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import Navbar from "./Navbar";
 import axiosInstance from '../../routes/axiosInstance.js'
 import TaskList from './TaskManagement/TaskList.jsx';
+import { AuthContext } from '../../provider/AuthProvider.jsx';
 
 export const TaskContextAPI = createContext(null);
 
 const Profile = () => {
 
+    const { user } = useContext(AuthContext);
     const [tasks, setTasks] = useState([])
     const [reload, setReload] = useState(false);
 
@@ -19,9 +21,9 @@ const Profile = () => {
         //     setTasks(data);
         //     setReload(true);
         // }
-
+        const id = user?.id;
         try {
-            const res = await axiosInstance.get('/tasks');
+            const res = await axiosInstance.get(`/tasks/${id}`);
             console.log(res);
             const data = res.data;
             if (data) {
@@ -46,7 +48,7 @@ const Profile = () => {
 
     useEffect(() => {
         fetchTaskData();
-    }, [reload])
+    }, [reload, user])
 
     const info = {
         tasks,
