@@ -71,11 +71,67 @@ const TaskList = () => {
     }, [searchTerm]);
     // -------------------- end searching ----------------
 
+    // --------------  start filter task ------------------------
+
+
+    const fetchFilterData = async (filter) => {
+      
+            try {
+                // Fetch tasks based on the search term
+                const response = await axiosInstance.get("/getFilteredTaskData", {
+                    params: { ...filter }
+                });
+                //setTasks(response.data);
+                console.log(response)
+                if (response.data?.tasks) {
+                    setTasks(response.data.tasks)
+                }
+
+            } catch (error) {
+                if (error.response) {
+                    const errors = error.response.data
+                    console.log(errors);
+                    if (errors.status == 404) {
+                        console.log('filter data is not found!')
+                        setTasks(null)
+                    }
+                } else {
+                    console.error('Error with no response from server:', error.message);
+                }
+            }
+    }
+
+
     const handleFilter = (e) => {
         e.preventDefault();
 
         const form = e.target;
+        const task_due_date = form.task_due_date.value;
+        const task_priority = form.task_priority.value;
+
+        if (!task_due_date && !task_priority) {
+            console.log('Both due_date and priority are empty. Not applying any filter.');
+            return;
+        }
+
+        const user_id = user?.id;
+        let filter = {user_id};
+
+        if (task_due_date) {
+            filter.task_due_date = task_due_date;
+        }
+
+        if (task_priority) {
+            filter.task_priority = task_priority;
+        }
+
+        console.log(filter)
+        fetchFilterData(filter);
+        form.reset();
     }
+
+
+    // ------------ end filter task
 
     // to assign task of this components state form context api
     useEffect(() => {
@@ -105,7 +161,7 @@ const TaskList = () => {
                         <div className='mb-3'>
                             <label className='pb-1.5'>Priority Level</label>
                             <select name="task_priority" className='task-input placeholder:text-sm hover:border-[#5e3cf7fb] hover:border-2' >
-                                <option value="" disabled>Select a priority level</option>
+                                <option value="">Select a priority level</option>
                                 <option value="Low">Low</option>
                                 <option value="Medium">Medium</option>
                                 <option value="High" >High</option>
