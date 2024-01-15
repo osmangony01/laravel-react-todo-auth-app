@@ -4,22 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\Todo;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TaskController extends Controller
 {
-    public function index(){
-        $tasks = Task::all();
+    public function index($id){
 
-        if($tasks->count()>0){
-            return response()->json([
-                'status'=> 200,
-                'tasks'=> $tasks
-            ], 200);
-        }
-        else{
+        
+        // $tasks = Task::find();
+
+        // if($tasks->count()>0){
+        //     return response()->json([
+        //         'status'=> 200,
+        //         'tasks'=> $tasks
+        //     ], 200);
+        // }
+        // else{
+        //     return response()->json([
+        //         'status'=> 404,
+        //         'tasks'=> 'No Records Found!!'
+        //     ], 404);
+        // }
+
+        try {
+            // $task = Task::findOrFail($id);
+            $tasks = User::find($id)->tasks;
+            if($tasks->count()>0){
+                return response()->json([
+                    'status'=> 200,
+                    'tasks'=> $tasks
+                ], 200);
+            }
+        } 
+        catch (ModelNotFoundException $exception) {
             return response()->json([
                 'status'=> 404,
                 'tasks'=> 'No Records Found!!'
@@ -63,6 +83,7 @@ class TaskController extends Controller
             $task->task_due_date =  $req->task_due_date;
             $task->task_priority =  $req->task_priority;
             $task->task_description =  $req->task_description;
+            $task->user_id = $req->id;
 
             if ($task->save()) {
                 return response()->json([
@@ -139,6 +160,24 @@ class TaskController extends Controller
             return response()->json([
                 'status' => 404,
                 'message' => 'Task not found!',
+            ], 404);
+        }
+    }
+
+    public function findUserTask()
+    {
+        $tasks = User::find("5")->tasks;
+
+        if($tasks->count()>0){
+            return response()->json([
+                'status'=> 200,
+                'tasks'=> $tasks
+            ], 200);
+        }
+        else{
+            return response()->json([
+                'status'=> 404,
+                'tasks'=> 'No Records Found!!'
             ], 404);
         }
     }

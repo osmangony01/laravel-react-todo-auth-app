@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('task_title');
             $table->date('task_due_date');
             $table->string('task_priority');
-            $table->longText('task_description');
+            $table->longText('task_description')->nullable();
+            $table->string('user_id');
             $table->timestamps();
         });
     }

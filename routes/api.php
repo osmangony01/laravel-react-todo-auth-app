@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -23,8 +24,11 @@ Route::middleware(['api', 'auth:api'])->group(function () {
 });
 
 
-Route::get('tasks', [TaskController::class, 'index']);
+Route::get('tasks/{id}', [TaskController::class, 'index']);
 Route::post('add-task', [TaskController::class, 'addTask']);
 Route::put('update-task/{id}', [TaskController::class, 'updateTask']);
 Route::delete("delete-task/{id}",[TaskController::class, 'deleteTask']);
 
+
+
+Route::get('user-task', [TaskController::class, 'findUserTask']);
