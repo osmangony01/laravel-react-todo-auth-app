@@ -29,6 +29,9 @@ Route::post('add-task', [TaskController::class, 'addTask']);
 Route::put('update-task/{id}', [TaskController::class, 'updateTask']);
 Route::delete("delete-task/{id}",[TaskController::class, 'deleteTask']);
 
+Route::get('task/search', [TaskController::class, 'searchByTitle']);
 
 
+
+// practice route
 Route::get('user-task', [TaskController::class, 'findUserTask']);

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use App\Models\Todo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -60,7 +59,6 @@ class TaskController extends Controller
             ], 404);
         }
     }
-
 
     public function addTask(Request $req)
     {
@@ -178,6 +176,35 @@ class TaskController extends Controller
             return response()->json([
                 'status'=> 404,
                 'tasks'=> 'No Records Found!!'
+            ], 404);
+        }
+    }
+
+    public function searchByTitle(Request $req)
+    {
+        $req->validate([
+            'user_id' => 'required|exists:users,id',
+            'title' => 'required|string',
+        ]);
+
+        // Retrieve tasks based on user_id and title
+        $user_id = $req->input('user_id');
+        $title = $req->input('title');
+
+        $tasks = Task::where('user_id', $user_id)
+                    ->where('task_title', 'like', '%' . $title . '%')
+                    ->get();
+      
+        if($tasks->count()>0){
+            return response()->json([
+                'status'=> 200,
+                'tasks'=> $tasks
+            ], 200);
+        }
+        else{
+            return response()->json([
+                'status'=> 404,
+                'errors'=> 'No Records Found!!'
             ], 404);
         }
     }
