@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\User;
+use App\Models\TaskImage;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -96,6 +98,100 @@ class TaskController extends Controller
                 ], 500);
             }
         }
+
+        // $ImageValidator = Validator::make($req->all(), [
+        //     'task_image' => 'required|array',
+        //     'task_image.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
+        // ]);
+       
+
+        // if($ImageValidator->fails()) {
+        //     return response()->json([
+        //         'status' => 422,
+        //         'errors' => $ImageValidator->errors()
+        //     ], 422);
+        // } 
+        // // Validation passed, you can access the validated data
+        // $validatedData = $ImageValidator->validated();
+
+        // // Access the array of task_image
+        // $taskImages = $validatedData['task_image'];
+        
+        // // Now you can loop through $taskImages to handle each image individually
+        // foreach ($taskImages as $image) 
+        // {
+        //      $multi_img = Image::make($image);
+
+        //     $ImageName = $image->getClientOriginalName();
+        //     //$extension = $orginal->getClientOriginalExtension();
+        //     $imagePath = public_path().'/uploads';
+
+        //     $saveImage =time().$ImageName;
+
+        //     $multi_img->save($imagePath.$saveImage);
+
+        //     TaskImage::create([
+        //         "task_id"=> $task->id,
+        //         "task_image" => $saveImage
+        //     ]);
+        // }
+    }
+
+    public function createTask(Request $req)
+    {
+        $validator = Validator::make($req->all(), [
+            'task_title' => 'required|string|max:255',
+            'task_due_date' => 'required|date',
+            'task_priority' => 'required|string',
+            'task_description' => 'required', 
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->errors()
+            ], 422);
+        } 
+
+        try {
+            $task = Task::create([
+                'task_title' => $req->task_title,
+                'task_due_date' => $req->task_due_date,
+                'task_priority' => $req->task_priority,
+                'task_description' => $req->task_description,
+                'user_id' => $req->id
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json(['status' => 500, 'error' => 'Failed to insert data.'], 500);
+        }
+
+        $images = $req->file('images');
+        If($images){
+            try{
+                foreach ($images as $key => $image) {
+
+                    // Sanitize the original filename directly using Str::slug()
+                    $sanitizedOriginalName = Str::slug($image->getClientOriginalName());
+        
+                    // Generate a unique filename
+                    $imageName = $sanitizedOriginalName . '_' . time() . '_' . $key . '.' . $image->getClientOriginalExtension();
+        
+                    // Move the file to the desired location
+                    $image->move('uploads/', $imageName);
+    
+                    TaskImage::create([
+                        "task_id"=> $task->id,
+                        "task_image" => $imageName
+                    ]);
+                }
+            }catch (\Exception $e) {
+                return response()->json(['status' => 500, 'error' => 'Failed to insert image data.'], 500);
+            }
+        }
+        return response()->json(['status' => 201, 'message' => 'Task created successfully'], 201);
+
     }
 
     public function updateTask(Request $req, $id){
@@ -238,5 +334,11 @@ class TaskController extends Controller
                 'errors'=> 'No Records Found!!'
             ], 404);
         }
+    }
+
+
+    public function multipleFileUpload(Request $req)
+    {
+
     }
 }

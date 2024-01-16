@@ -32,6 +32,8 @@ Route::delete("delete-task/{id}",[TaskController::class, 'deleteTask']);
 Route::get('task/search', [TaskController::class, 'searchByTitle']);
 Route::get('getFilteredTaskData', [TaskController::class, 'filteredTaskData']);
 
+Route::post('create-task', [TaskController::class, 'createTask']);
 
+Route::post('file-upload', [TaskController::class, 'multipleFileUpload']);
 // practice route
 Route::get('user-task', [TaskController::class, 'findUserTask']);
