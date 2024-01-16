@@ -144,7 +144,7 @@ const TaskList = () => {
         <div className=' w-full lg:w-[1000px] mx-auto border px-12 pt-6 pb-10 bg-white mt-3 h-full'>
             <h1 className='text-2xl text-center pb-8 font-semibold'>Welcome to Task Manager</h1>
             <div>
-                <button onClick={() => handleAddModal(true)} className='px-2.5 py-1.5 bg-blue-500 rounded my-4 font-semibold text-white hover:bg-blue-700'>Add Task</button>
+                <button onClick={() => handleAddModal(true)} className='px-4 py-1.5 border border-blue-500 rounded my-4 font-semibold text-blue-500 hover:text-white hover:bg-blue-700'>Add Task</button>
                 {<AddTask status={addModel} handleAddModal={handleAddModal}></AddTask>}
 
                 <div className='flex justify-end items-center my-6'>
@@ -168,14 +168,14 @@ const TaskList = () => {
                             </select>
                         </div>
                         <div className='mb-3'>
-                            <button type='submit' className='px-4 py-1.5 border border-violet-700 text-black rounded hover:bg-violet-700 hover:text-white '>Filter
+                            <button type='submit' className='px-4 py-1.5 border border-violet-700 text-violet-700 rounded hover:bg-violet-700 hover:text-white '>Filter
                             </button>
                         </div>
                     </form>
                 </div>
                 <div className='overflow-x-auto w-full '>
                     {
-                        !allTask && <div className='my-3 text-red-500 text-center font-bold'>Search result not Found!</div>
+                        !allTask && <div className='my-3 text-red-500 text-center font-bold'>Result not Found!</div>
                     }
                     <table className='table w-full'>
                         {allTask?.length >= 1 && <thead className='bg-blue-100'>
@@ -191,7 +191,7 @@ const TaskList = () => {
                         <tbody>
                             {
                                 allTask?.map((item, index) => {
-                                    return <Task item={item} index={index}></Task>
+                                    return <Task item={item} index={index} key={index}></Task>
                                 })
                             }
                         </tbody>

@@ -83,7 +83,7 @@ const EditTask = ({ status, handleEditModal, item }) => {
         <div>
             {
                 modal && <div className='h-screen w-full fixed top-0 left-0 flex justify-center items-center bg-black bg-opacity-20 z-50'>
-                    <div className='relative bg-white rounded-md shadow-lg w-[500px]  text-[15px] mx-auto h-[500px] '>
+                    <div className='relative bg-white rounded-md shadow-lg w-[500px] text-[15px] mx-auto inline-block'>
                         <span onClick={handleModal} className='absolute top-[15px] right-[15px] hover:bg-slate-200 p-2 rounded-full'><RxCross1 color='' size={20}></RxCross1></span>
                         <div className="p-10">
                             <form onSubmit={handleSubmit}>

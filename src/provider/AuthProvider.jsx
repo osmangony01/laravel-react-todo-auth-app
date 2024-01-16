@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
             console.log(res.status)
             if (res.data?.user) {
                 setUser(res.data.user);
-                setLoading(true);
+                setLoading(false);
                 saveToken(res.data.access_token);
                 return true;
             }

@@ -27,7 +27,7 @@ const PrivateRoute = ({ children }) => {
         return children;
     }
 
-    useEffect(() => { }, [user, loading]);
+    // useEffect(() => { }, [user, loading]);
     console.log(user)
     return <Navigate  to={"/"} replace></Navigate>
 };

@@ -41,7 +41,7 @@ const Navbar = () => {
 
     return (
         <div className='flex justify-between items-center py-2 px-8 bg-white '>
-            <div>Hi, {user?.displayName}</div>
+            <div>Hi, {user?.name}</div>
             <div className='flex justify-center items-center'>
                 <div onClick={handleLogOut} className="hover:text-blue-500 hover:font-semibold text-sm  cursor-pointer pr-3" >
                     <a>Sign Out</a>
