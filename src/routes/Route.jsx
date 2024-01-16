@@ -3,9 +3,10 @@ import App from "../App";
 import SignUp from "../components/SignUp/SignUp";
 import SignIn from "../components/SignIn/SignIn";
 import Profile from "../components/Profile/Profile";
-import TaskList from "../components/Profile/TaskManagement/TaskList";
 import PrivateRoute from "./PrivateRoute";
-
+// import TaskList from "../components/Profile/TaskManagement/TaskList";
+// import FileUpload from "../components/Profile/TaskManagement/FIleUpload";
+// import FileUpload2 from "../components/Profile/TaskManagement/FileUpload2";
 
 const router = createBrowserRouter([
     {
@@ -29,6 +30,14 @@ const router = createBrowserRouter([
     // {
     //     path: "/task-list",
     //     element: <TaskList></TaskList>
+    // }
+    // {
+    //     path: "/file-upload",
+    //     element: <FileUpload></FileUpload>
+    // },
+    // {
+    //     path: "/upload",
+    //     element: <FileUpload2></FileUpload2>
     // }
     
 ]);
